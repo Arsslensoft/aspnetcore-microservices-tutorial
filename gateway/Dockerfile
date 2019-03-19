@@ -4,10 +4,10 @@ EXPOSE 5000
 
 FROM microsoft/dotnet:2.2-sdk-stretch AS build
 WORKDIR /src
-COPY ["gateway.csproj", "gateway/"]
-RUN dotnet restore "gateway/gateway.csproj"
+COPY ["gateway.csproj", "./"]
+RUN dotnet restore "gateway.csproj"
 COPY . .
-WORKDIR "/src/gateway"
+WORKDIR "/src"
 RUN dotnet build "gateway.csproj" -c Release -o /app
 
 FROM build AS publish

@@ -431,10 +431,10 @@ EXPOSE 5000
 
 FROM microsoft/dotnet:2.2-sdk-stretch AS build
 WORKDIR /src
-COPY ["gateway.csproj", "./"]
-RUN dotnet restore "gateway.csproj"
+COPY ["gateway.csproj", "gateway/"]
+RUN dotnet restore "gateway/gateway.csproj"
 COPY . .
-WORKDIR "/src"
+WORKDIR "/src/gateway"
 RUN dotnet build "gateway.csproj" -c Release -o /app
 
 FROM build AS publish
@@ -447,8 +447,22 @@ ENTRYPOINT ["dotnet", "gateway.dll"]
 ```
 
 ## Docker compose build file
+This file will be used by the Azure DevOps Pipelines
 ```yaml
-
+version: '3'
+services:
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+  categories:
+    build:
+      context: ./categories
+      dockerfile: Dockerfile   
+  products:
+    build:
+      context: ./products
+      dockerfile: Dockerfile         
 ```
 # Azure DevOps Pipeline
 Go to https://azure.microsoft.com/en-us/services/devops/
@@ -458,3 +472,32 @@ Follow the video
 
 
 # Creating YAML Files for kubernetes
+
+## Creating the gateway depolyment
+We will start by creating the gateway depolyment
+```yaml
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: gateway
+  namespace: devops-workshop
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: gateway
+  replicas: 3 # tells deployment to run 1 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: x-api-gateway
+          image: docker.gomycode.tn:443/gomycode/x-api-gateway:latest
+          ports:
+          - containerPort: 5000
+      imagePullSecrets:
+        - name: reg-cred
+```
