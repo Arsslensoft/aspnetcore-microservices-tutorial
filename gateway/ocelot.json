@@ -1,0 +1,53 @@
+{
+    "ReRoutes": [
+        {
+            "DownstreamPathTemplate": "/api/categories/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                    {
+                        "Host": "categories.devops-workshop.svc.cluster.local",
+                        "Port": 5000
+                    }
+                ],
+            "UpstreamPathTemplate": "/categories/{everything}",
+            "SwaggerKey": "categories"
+        },
+        {
+            "DownstreamPathTemplate": "/api/products/{everything}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                    {
+                        "Host": "products.devops-workshop.svc.cluster.local",
+                        "Port": 5000
+                    }
+                ],
+            "UpstreamPathTemplate": "/products/{everything}",
+            "SwaggerKey": "products"
+        }
+    ],
+    "SwaggerEndPoints": [
+        {
+        "Key": "products",
+        "Config": [
+                {
+                "Name": "Products API",
+                "Version": "v1",
+                "Url": "http://products.devops-workshop.svc.cluster.local:5000/swagger/v1/swagger.json"
+                }
+            ]
+        },
+        {
+        "Key": "categories",
+        "Config": [
+                {
+                "Name": "Categories API",
+                "Version": "v1",
+                "Url": "http://categories.devops-workshop.svc.cluster.local:5000/swagger/v1/swagger.json"
+                }
+            ]
+        }
+    ],
+    "GlobalConfiguration": {
+
+    }
+}
