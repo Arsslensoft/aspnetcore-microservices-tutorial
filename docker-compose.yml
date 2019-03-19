@@ -1,0 +1,14 @@
+version: '3'
+services:
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+  categories:
+    build:
+      context: ./categories
+      dockerfile: Dockerfile   
+  products:
+    build:
+      context: ./products
+      dockerfile: Dockerfile         
