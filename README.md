@@ -466,10 +466,9 @@ services:
 ```
 # Azure DevOps Pipeline
 Go to https://azure.microsoft.com/en-us/services/devops/
+
 Create an azure devops organisation, then create a project
-
-Follow the video 
-
+![Azure](images/azure.png "Azure")
 
 # Creating YAML Files for kubernetes
 We will work under a namespace called **devops-workshop**
@@ -610,4 +609,6 @@ spec:
 
 ```
 
+![Azure Pipeline](images/pipe.png "Azure Pipeline")
 
+# Video
