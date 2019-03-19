@@ -17,14 +17,14 @@ spec:
     spec:
       containers:
         - name: products
-          image: docker.gomycode.tn:443/devops-workshop/products:latest
+          image: "docker.gomycode.tn:443/devopsworkshop_products:latest"
+          imagePullPolicy: Always
           ports:
-          - containerPort: 5000
+            - containerPort: 5000
       imagePullSecrets:
         - name: mysecret
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -34,16 +34,15 @@ metadata:
     app: products
 spec:
   ports:
-  - name: http
-    port: 5000
-    protocol: TCP
-    targetPort: 5000
+    - name: http
+      port: 5000
+      protocol: TCP
+      targetPort: 5000
   selector:
     app: products
-  type: ClusterIP            
-  
----
+  type: ClusterIP
 
+---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
@@ -63,13 +62,13 @@ spec:
     spec:
       containers:
         - name: categories
-          image: docker.gomycode.tn:443/devops-workshop/categories:latest
+          image: "docker.gomycode.tn:443/devopsworkshop_categories:latest"
+          imagePullPolicy: Always
           ports:
-          - containerPort: 5000
+            - containerPort: 5000
       imagePullSecrets:
         - name: mysecret
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -79,16 +78,15 @@ metadata:
     app: categories
 spec:
   ports:
-  - name: http
-    port: 5000
-    protocol: TCP
-    targetPort: 5000
+    - name: http
+      port: 5000
+      protocol: TCP
+      targetPort: 5000
   selector:
     app: categories
-  type: ClusterIP  
-  
----
+  type: ClusterIP
 
+---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
@@ -108,13 +106,13 @@ spec:
     spec:
       containers:
         - name: gateway
-          image: docker.gomycode.tn:443/devops-workshop/gateway:latest
+          image: "docker.gomycode.tn:443/devopsworkshop_gateway:latest"
+          imagePullPolicy: Always
           ports:
-          - containerPort: 5000
+            - containerPort: 5000
       imagePullSecrets:
         - name: mysecret
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -124,11 +122,10 @@ metadata:
     app: gateway
 spec:
   ports:
-  - name: http
-    port: 5000
-    protocol: TCP
-    targetPort: 5000
+    - name: http
+      port: 5000
+      protocol: TCP
+      targetPort: 5000
   selector:
     app: gateway
-  type: ClusterIP 
-
+  type: ClusterIP

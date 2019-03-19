@@ -472,10 +472,99 @@ Follow the video
 
 
 # Creating YAML Files for kubernetes
+We will work under a namespace called **devops-workshop**
 
-## Creating the gateway depolyment
-We will start by creating the gateway depolyment
+The yaml file below will define the specs of the deployments and services
 ```yaml
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: products
+  namespace: devops-workshop
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: products
+  replicas: 3 # tells deployment to run 1 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: products
+    spec:
+      containers:
+        - name: products
+          image: "docker.gomycode.tn:443/devopsworkshop_products:latest"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+      imagePullSecrets:
+        - name: mysecret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: products
+  namespace: devops-workshop
+  labels:
+    app: products
+spec:
+  ports:
+    - name: http
+      port: 5000
+      protocol: TCP
+      targetPort: 5000
+  selector:
+    app: products
+  type: ClusterIP
+
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: categories
+  namespace: devops-workshop
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: categories
+  replicas: 3 # tells deployment to run 1 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: categories
+    spec:
+      containers:
+        - name: categories
+          image: "docker.gomycode.tn:443/devopsworkshop_categories:latest"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+      imagePullSecrets:
+        - name: mysecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: categories
+  namespace: devops-workshop
+  labels:
+    app: categories
+spec:
+  ports:
+    - name: http
+      port: 5000
+      protocol: TCP
+      targetPort: 5000
+  selector:
+    app: categories
+  type: ClusterIP
+
+---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
@@ -494,10 +583,31 @@ spec:
         app: gateway
     spec:
       containers:
-        - name: x-api-gateway
-          image: docker.gomycode.tn:443/gomycode/x-api-gateway:latest
+        - name: gateway
+          image: "docker.gomycode.tn:443/devopsworkshop_gateway:latest"
+          imagePullPolicy: Always
           ports:
-          - containerPort: 5000
+            - containerPort: 5000
       imagePullSecrets:
-        - name: reg-cred
+        - name: mysecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway
+  namespace: devops-workshop
+  labels:
+    app: gateway
+spec:
+  ports:
+    - name: http
+      port: 5000
+      protocol: TCP
+      targetPort: 5000
+  selector:
+    app: gateway
+  type: ClusterIP
+
 ```
+
+
