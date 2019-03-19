@@ -8,6 +8,8 @@ We will not talk about the microservices communication because its another subje
 # Requirements
 + .NET Core 2.2
 + Visual Studio or Visual Studio Code (In this tutorial i will use Visual Studio Code because it is easily accessible by everyone)
++ Kubernetes Cluster with dashboard
++ Private docker registry
 
 # Creating the microservices
 Lets start by making the microservices
