@@ -614,3 +614,5 @@ spec:
 ![Azure Pipeline](images/pipe.png "Azure Pipeline")
 
 # Video
+
+https://www.youtube.com/watch?v=YNvy8AqTzEI
