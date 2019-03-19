@@ -1,14 +1,13 @@
 FROM microsoft/dotnet:2.2-aspnetcore-runtime-stretch-slim AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 5000
 
 FROM microsoft/dotnet:2.2-sdk-stretch AS build
 WORKDIR /src
-COPY ["categories/categories.csproj", "categories/"]
-RUN dotnet restore "categories/categories.csproj"
+COPY ["categories.csproj", "./"]
+RUN dotnet restore "categories.csproj"
 COPY . .
-WORKDIR "/src/categories"
+WORKDIR "/src"
 RUN dotnet build "categories.csproj" -c Release -o /app
 
 FROM build AS publish

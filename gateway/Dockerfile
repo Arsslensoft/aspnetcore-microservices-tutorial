@@ -1,11 +1,10 @@
 FROM microsoft/dotnet:2.2-aspnetcore-runtime-stretch-slim AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 5000
 
 FROM microsoft/dotnet:2.2-sdk-stretch AS build
 WORKDIR /src
-COPY ["gateway/gateway.csproj", "gateway/"]
+COPY ["gateway.csproj", "gateway/"]
 RUN dotnet restore "gateway/gateway.csproj"
 COPY . .
 WORKDIR "/src/gateway"

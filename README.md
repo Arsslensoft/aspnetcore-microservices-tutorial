@@ -427,15 +427,14 @@ for each project create a Dockerfile the base file content will include (in this
 ```Dockerfile
 FROM microsoft/dotnet:2.2-aspnetcore-runtime-stretch-slim AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 5000
 
 FROM microsoft/dotnet:2.2-sdk-stretch AS build
 WORKDIR /src
-COPY ["gateway/gateway.csproj", "gateway/"]
-RUN dotnet restore "gateway/gateway.csproj"
+COPY ["gateway.csproj", "./"]
+RUN dotnet restore "gateway.csproj"
 COPY . .
-WORKDIR "/src/gateway"
+WORKDIR "/src"
 RUN dotnet build "gateway.csproj" -c Release -o /app
 
 FROM build AS publish
@@ -447,28 +446,15 @@ COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "gateway.dll"]
 ```
 
-## Building images
-Run the docker build command for each project
+## Docker compose build file
+```yaml
 
-The command below builds a docker image of the **gateway** project.
-```shell
-docker build -t "devops-workshop/gateway" -f "Dockerfile" --label "com.microsoft.created-by=visual-studio" ".."
 ```
-
-
-The command below builds a docker image of the **products** project.
-```shell
-docker build -t "devops-workshop/products" -f "Dockerfile" --label "com.microsoft.created-by=visual-studio" ".."
-```
-
-
-The command below builds a docker image of the **categories** project.
-```shell
-docker build -t "devops-workshop/categories" -f "Dockerfile" --label "com.microsoft.created-by=visual-studio" ".."
-```
-## Using Azure DevOps
+# Azure DevOps Pipeline
 Go to https://azure.microsoft.com/en-us/services/devops/
 Create an azure devops organisation, then create a project
+
+Follow the video 
 
 
 # Creating YAML Files for kubernetes
